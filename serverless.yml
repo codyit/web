@@ -1,5 +1,5 @@
 ---
-service: serverless-react-boilerplate
+service: codyit-web
 frameworkVersion: "3"
 useDotenv: true
 variablesResolutionMode: 20210326
@@ -8,8 +8,8 @@ disabledDeprecations:
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  region: ${opt:region, 'us-east-1'}
+  runtime: nodejs18.x
+  region: ${opt:region, 'ap-southeast-1'}
   stage: ${opt:stage, 'dev'}
   memorySize: 512
   timeout: 6
@@ -30,7 +30,7 @@ provider:
       Fn::Join:
         - ""
         - - https://
-          - Ref: ApiGatewayRestApi
+          - Ref: ApiGatewayHttpApi
           - .execute-api.
           - Ref: AWS::Region
           - .amazonaws.com/
@@ -105,11 +105,8 @@ custom:
 resources:
   Resources:
     # Customize the API Gateway resource
-    ApiGatewayRestApi:
-      Type: AWS::ApiGateway::RestApi
-      Properties:
-        # Enable gzip compression
-        MinimumCompressionSize: 1000
+    ApiGatewayHttpApi:
+      Type: AWS::ApiGatewayV2::Api
 
     # S3 Bucket for the distribution bundles
     DistBucket:
@@ -126,17 +123,17 @@ resources:
                 - Fn::Join:
                     - ""
                     - - https://
-                      - Ref: ApiGatewayRestApi
+                      - Ref: ApiGatewayHttpApi
                       - .execute-api.
                       - Ref: AWS::Region
                       - .amazonaws.com
               MaxAge: 3000
 
   Outputs:
-    ApiGatewayRestApi:
+    ApiGatewayHttpApi:
       Description: API Gateway Endpoint
       Value:
-        Ref: ApiGatewayRestApi
+        Ref: ApiGatewayHttpApi
     DistBucket:
       Description: Distribution S3 Bucket
       Value:

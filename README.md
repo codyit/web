@@ -1,4 +1,6 @@
-# ♨️ serverless-react-boilerplate
+# Codyit personal web
+
+Created from templiate [♨️ serverless-react-boilerplate](https://github.com/arabold/serverless-react-boilerplate)
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 [![dependencies](https://img.shields.io/david/arabold/serverless-react-boilerplate.svg)](https://github.com/arabold/serverless-react-boilerplate)
