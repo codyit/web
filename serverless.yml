@@ -96,7 +96,8 @@ custom:
     httpPort: 3000
     lambdaPort: 3002
 
-  domain: "*.speca.dev"
+  domain: "speca.dev"
+  wildcardDomain: "*.${self:custom.domain}"
 
 resources:
   Resources:
@@ -104,6 +105,8 @@ resources:
       Type: AWS::CertificateManager::Certificate
       Properties:
         DomainName: ${self:custom.domain}
+        SubjectAlternativeNames:
+          - ${self:custom.wildcardDomain}
         ValidationMethod: DNS
 
     ApiGatewayDomainName:
@@ -115,6 +118,7 @@ resources:
               Ref: AcmTlsCertificate
 
     ApiDomainMapping:
+      DependsOn: ApiGatewayDomainName
       Type: AWS::ApiGatewayV2::ApiMapping
       Properties:
         ApiId:
