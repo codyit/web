@@ -1,6 +1,7 @@
 ---
 service: codyit-web
 frameworkVersion: "3"
+configValidationMode: error
 useDotenv: true
 variablesResolutionMode: 20210326
 disabledDeprecations:
@@ -16,8 +17,10 @@ provider:
   logRetentionInDays: 7
   lambdaHashingVersion: 20201221 # for upcoming Serverless v3
 
-  apiGateway:
-    shouldStartNameWithService: true # for upcoming Serverless v3
+  httpApi:
+    name: codyit-web
+    payload: "2.0"
+    disableDefaultEndpoint: true
 
   environment:
     SERVERLESS_PROJECT: ${self:service}
@@ -30,7 +33,7 @@ provider:
       Fn::Join:
         - ""
         - - https://
-          - Ref: ApiGatewayHttpApi
+          - Ref: HttpApi
           - .execute-api.
           - Ref: AWS::Region
           - .amazonaws.com/
@@ -47,25 +50,16 @@ functions:
     # Any web request regardless of path or method will be handled by a single Lambda function
     handler: handler.serve
     events:
-      - http:
+      - httpApi:
           path: /
           method: any
-          cors: true
-      - http:
+      - httpApi:
           path: /{any+}
           method: any
-          cors: true
 
 custom:
   distBucketUrl:
-    us-east-1:
-      # us-east-1 uses a different URL format than the other regions
-      Fn::Join:
-        - ""
-        - - https://s3.amazonaws.com/
-          - Ref: DistBucket
     default:
-      # All other regions
       Fn::Join:
         - ""
         - - https://s3-
@@ -102,11 +96,32 @@ custom:
     httpPort: 3000
     lambdaPort: 3002
 
+  domain: "*.speca.dev"
+
 resources:
   Resources:
-    # Customize the API Gateway resource
-    ApiGatewayHttpApi:
-      Type: AWS::ApiGatewayV2::Api
+    AcmTlsCertificate:
+      Type: AWS::CertificateManager::Certificate
+      Properties:
+        DomainName: ${self:custom.domain}
+        ValidationMethod: DNS
+
+    ApiGatewayDomainName:
+      Type: AWS::ApiGatewayV2::DomainName
+      Properties:
+        DomainName: ${self:custom.domain}
+        DomainNameConfigurations:
+          - CertificateArn:
+              Ref: AcmTlsCertificate
+
+    ApiDomainMapping:
+      Type: AWS::ApiGatewayV2::ApiMapping
+      Properties:
+        ApiId:
+          Ref: HttpApi
+        DomainName: ${self:custom.domain}
+        Stage:
+          Ref: HttpApiStage
 
     # S3 Bucket for the distribution bundles
     DistBucket:
@@ -123,7 +138,7 @@ resources:
                 - Fn::Join:
                     - ""
                     - - https://
-                      - Ref: ApiGatewayHttpApi
+                      - Ref: HttpApi
                       - .execute-api.
                       - Ref: AWS::Region
                       - .amazonaws.com
@@ -133,7 +148,7 @@ resources:
     ApiGatewayHttpApi:
       Description: API Gateway Endpoint
       Value:
-        Ref: ApiGatewayHttpApi
+        Ref: HttpApi
     DistBucket:
       Description: Distribution S3 Bucket
       Value:
