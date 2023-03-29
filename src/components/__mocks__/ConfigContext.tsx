@@ -6,7 +6,8 @@ import { Config } from "../../server/config";
 const ConfigContext = createContext<Config>({
   app: {
     TITLE: `${manifest.short_name} Mock`,
-    THEME_COLOR: manifest.theme_color,
+    THEME_PRIMARY: manifest.theme_color,
+    THEME_SECONDARY: manifest.background_color,
     URL: "http://localhost:3000",
     DIST_URL: "http://localhost:8080",
     PUBLIC_URL: "http://localhost:8080",

@@ -21,7 +21,6 @@ provider:
     name: codyit-web
     payload: "2.0"
     disableDefaultEndpoint: true
-    cors: true
 
   environment:
     SERVERLESS_PROJECT: ${self:service}
@@ -140,13 +139,7 @@ resources:
               AllowedMethods:
                 - "GET"
               AllowedOrigins:
-                - Fn::Join:
-                    - ""
-                    - - https://
-                      - Ref: HttpApi
-                      - .execute-api.
-                      - Ref: AWS::Region
-                      - .amazonaws.com
+                - https://${self:custom.domain}
               MaxAge: 3000
 
   Outputs:
