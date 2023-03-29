@@ -21,7 +21,7 @@ const html = ({
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      <meta name="theme-color" content="${config.app.THEME_COLOR}" />
+      <meta name="theme-color" content="${config.app.THEME_PRIMARY}" />
       <title>${config.app.TITLE}</title>
       <link rel="manifest" href="${config.app.PUBLIC_URL}/manifest.json" />
       <link rel="shortcut icon" href="${config.app.PUBLIC_URL}/favicon.ico" />

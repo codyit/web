@@ -20,7 +20,8 @@ const config = {
     /** Name of the app is loaded from the `manifest.json` */
     TITLE: manifest.short_name,
     /** Theme is also loaded from the `manifest.json` */
-    THEME_COLOR: manifest.theme_color,
+    THEME_PRIMARY: manifest.theme_color,
+    THEME_SECONDARY: manifest.background_color,
     /** URL to our public API Gateway endpoint */
     URL: isLocal ? `http://localhost:3000` : String(process.env.APIGATEWAY_URL),
     /** Where the bundled distribution files (`main.js`, `main.css`) are hosted */

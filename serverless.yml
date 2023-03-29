@@ -21,6 +21,7 @@ provider:
     name: codyit-web
     payload: "2.0"
     disableDefaultEndpoint: true
+    cors: true
 
   environment:
     SERVERLESS_PROJECT: ${self:service}

@@ -1,38 +1,6 @@
-# Codyit personal web
-
-Created from templiate [♨️ serverless-react-boilerplate](https://github.com/arabold/serverless-react-boilerplate)
-
-[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![dependencies](https://img.shields.io/david/arabold/serverless-react-boilerplate.svg)](https://github.com/arabold/serverless-react-boilerplate)
-
-Lightweight boilerplate project to set up a React 17 web application on AWS Lambda using the Serverless Framework.
-
-## Key Features
-
-- Universal app; server-side rendering with dynamic configuration context passed from backend to browser.
-- Self-contained; no additional setup steps necessary other than running `npx sls deploy`.
-- Lightweight; no mandatory `redux`, `react-router`, `sass`, `less` or any other 3rd party dependency for full flexibility.
-- React "Fast Refresh" (previously known as "Hot Reloading") using the [React Refresh Webpack Plugin](https://github.com/pmmmwh/react-refresh-webpack-plugin).
-- Built-in support for [code splitting](https://webpack.js.org/guides/code-splitting/) and [tree shaking](https://webpack.js.org/guides/tree-shaking/) to optimize page loading times.
-- Full [TypeScript](https://www.typescriptlang.org/) support using Babel 7 and Webpack 5, including custom [module resolution](https://www.typescriptlang.org/docs/handbook/module-resolution.html).
-- Working [Jest](https://jestjs.io/) test environment.
-
-[Looking for the plain JavaScript version of this boilerplate?](https://github.com/arabold/serverless-react-boilerplate/)
-
-## Overview
-
-### How Does It Work?
-
-The idea is that we use AWS Lambda to serve the dynamic part of our app, the server-side logic, and perform the server-side rendering. For all static data like images, stylesheets, and even the app's `index.tsx` that is loaded in the browser, we use an S3 bucket for public hosting.
-
-This combination makes our app fast and incredibly scalable. AWS will spin up new Lambda instances once your number of users increases, handling even the largest spikes fully automatically while incurring virtually no costs when your app isn't used. At the same time, S3 provides a robust and fast platform for your static content so you don't have to waste your own computing resources.
-
-All resources, including the S3 bucket for hosting static content, are created and configured automatically when your app is deployed the first time. You can make changes to the default setup by updating your `serverless.yml` to your linking.
-
 ### Folder Structure
 
 ```
-serverless-react-boilerplate/
 │
 ├── public/ - Public assets which will retain their original file names and folder structure
 │   ├── favicon.ico - Favicon
